@@ -22,6 +22,7 @@ file_mappings:
     backend_url: "https://example.com/another_playlist.m3u"
     regex_patterns:
       "old-server.com": "new-server.com"
+```
 
 2. Run the Docker container with the config.yaml file mounted as a volume:
 
