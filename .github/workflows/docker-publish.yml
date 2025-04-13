@@ -52,14 +52,12 @@ jobs:
             VERSION="${{ github.ref_name }}"
             VERSION="${VERSION#v}"
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "is_release=true" >> $GITHUB_OUTPUT
           else
             # For branches, use branch name and short SHA
             BRANCH_NAME="${{ github.ref_name }}"
             SHORT_SHA=$(git rev-parse --short HEAD)
             VERSION="${BRANCH_NAME//\//-}-${SHORT_SHA}"
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "is_release=false" >> $GITHUB_OUTPUT
           fi
 
       # Extract metadata (tags, labels) for Docker
@@ -71,8 +69,8 @@ jobs:
           tags: |
             # Always add version from previous step
             type=raw,value=${{ steps.get_version.outputs.version }}
-            # Add latest tag only for tags or main branch
-            type=raw,value=latest,enable=${{ (github.ref == 'refs/heads/main' || github.ref_type == 'tag') && steps.get_version.outputs.is_release == 'true' }}
+            # Add latest tag for main branch or tags
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' || github.ref_type == 'tag' }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       - name: Build and push Docker image
