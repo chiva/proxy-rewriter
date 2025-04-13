@@ -1,4 +1,6 @@
+log_level: debug
 recompress_content: false
+
 file_mappings:
   myfile.m3u:
     backend_url: "https://raw.githubusercontent.com/Loordubmary/how-to-make-m3u-playlist/refs/heads/master/sample-playlist.m3u"
